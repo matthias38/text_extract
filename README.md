@@ -1,8 +1,4 @@
-# React + Vite
+# text_extract
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a react component that imports a pdf file as images, then you can select multiple areas (crops) of the pdf pages, where you want to extract (OCR) the text from.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
