@@ -1,0 +1,53 @@
+.content-container {
+  width:100%;
+  height:100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+ 
+}
+
+.editable-div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 200px;
+    overflow-y: auto;
+}
+
+
+.ace_keyword {
+    color: lightpink;
+}
+.ace_string {
+    color: lightcyan;
+}
+
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund */
+    z-index: 1000; /* Stellen Sie sicher, dass dieser Wert höher ist als der z-index anderer Elemente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-indicator {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+
+
+
+.quelltextselector-container{
+
+    display: flex;
+    flex-direction: row;
+}
