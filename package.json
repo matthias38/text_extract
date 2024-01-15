@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "pdfjs": "^2.5.3",
+    "pdfjs-dist": "^4.0.379",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-image-crop": "^11.0.4",
     "react-modal": "^3.16.1",
+    "react-tracked": "^1.7.11",
+    "tesseract.js": "^5.0.4",
+    "vite-plugin-top-level-await": "^1.4.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

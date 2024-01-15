@@ -7,31 +7,41 @@ import React, {
 } from 'react';
 
 import * as pdfjs from 'pdfjs-dist/build/pdf';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
+
+
+
 import ReactModal from 'react-modal';
 
 import './Modal.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import useContentStore from './useContentStore';
-import Sequences from './Sequences';
-import {
-    fetchSequences
-} from './fetchData';
+
+
+
+
+
 import {
     create
 } from 'zustand';
 
 import extractText from './extractText';
 
-import { useSequencesStore } from './createSequencesStore';
-import QuelltextForm from './QuelltextForm';
 
-import { generateAbstractsForTextBlocks } from './GPT';
+
 
 
 const useStore = create((set) => ({
+
+    seq:[],
+    setSeq:(value) => set({
+        seq: value
+    }),
+
+
+
     text: '',
     images: [],
     isModalOpen: false,
@@ -109,6 +119,8 @@ const useStore = create((set) => ({
     }),
 }));
 
+
+
 function cloneArrayBuffer(buffer) {
     const cloned = new ArrayBuffer(buffer.byteLength);
     new Uint8Array(cloned).set(new Uint8Array(buffer));
@@ -148,21 +160,16 @@ var pxc = {}
 
 function ImportPdf() {
 
-    const sd = process.env.REACT_APP_SERVER_DOMAIN
-    const token = localStorage.getItem('token');
 
-    const {
-        setSequences,
-        setFetched
-    } = useSequencesStore();
 
-    const {
-        selectedQuelltext,
-        quelltexte
-    } = useContentStore();
+
+
+
     const imageRef = useRef(null);
 
     const {
+        seq,
+        setSeq,
         text,
         setText,
         images,
@@ -429,37 +436,8 @@ function ImportPdf() {
 
 
     const addSequences = async (sequences) => {
-        const quelltextId = selectedQuelltext;
 
-        try {
-            const response = await fetch(`${sd}/quelltext/${quelltextId}/sequences`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    sequences: sequences
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.status === 201) {
-
-                setFetched({
-                    [quelltextId]: true
-                })
-                setSequences({
-                    [quelltextId]: data.sequences
-                })
-
-            } else {
-                console.error(data.message); // "Error adding sequences"
-            }
-        } catch (error) {
-            console.error("Es gab einen Fehler beim Hinzufügen der Sequenzen:", error);
-        }
+    setSeq(sequences)
     }
 
 
@@ -637,6 +615,12 @@ resetState();
                     <button onClick={onButtonExtractText}>Text Extrahieren</button>
                 </div>
             </ReactModal>
+
+
+
+
+
+            <div>{seq.map((x)=>{return <div>{x.text}</div>})}</div>
 
        
 

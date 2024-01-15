@@ -118,7 +118,7 @@ const convertToOneLine = (text) => {
 
     let lines = text.split("\n")
 
-    console.log([...lines])
+  
     for (let index = 0; index < lines.length; index++) {
 
         lines[index] = lines[index].replace(/\r/g, '')
