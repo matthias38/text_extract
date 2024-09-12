@@ -4,13 +4,29 @@ const extractText = async (crops, images, startPage, endPage, callBackStatus = (
     const textBlocks = [];
     const worker = await createWorker('deu');
 
+
+
+// first run to get data of what will happen, number of pages etc.
+    
+const pagesWithCropsSelected = []
+const pagesWithCropsSelected_pageNumber = []
     for (let i = startPage - 1; i < endPage; i++) {
         if (!crops[i]) continue;
+        pagesWithCropsSelected.push(crops[i])
+        pagesWithCropsSelected_pageNumber.push(i)
+    }
 
-        for (let j = 0; j < crops[i].length; j++) {
-            const cropOfPage = crops[i][j];
-            callBackStatus(i, j);
-            const croppedDataURL = await cropImageByPercentage(images[i], cropOfPage.x, cropOfPage.y, cropOfPage.width, cropOfPage.height);
+
+
+
+    for (let i = 0; i < pagesWithCropsSelected.length; i++) {
+
+
+        for (let j = 0; j < crops[pagesWithCropsSelected_pageNumber[i]].length; j++) {
+            const cropOfPage = crops[pagesWithCropsSelected_pageNumber[i]][j];
+
+            callBackStatus(pagesWithCropsSelected_pageNumber[i]+1, j+1, pagesWithCropsSelected.length, i+1, crops[pagesWithCropsSelected_pageNumber[i]].length);
+            const croppedDataURL = await cropImageByPercentage(images[pagesWithCropsSelected_pageNumber[i]], cropOfPage.x, cropOfPage.y, cropOfPage.width, cropOfPage.height);
             const data = await worker.recognize(croppedDataURL);
 
             // Hier werden einzelne Absätze nach FontSize aufgesplittet
@@ -19,7 +35,7 @@ const extractText = async (crops, images, startPage, endPage, callBackStatus = (
             textBlocks.push(newParagraphs.map((x, index) => ({
                 text: convertToOneLine(x.text),
                 abstract: "",
-                page: [i],
+                page: [pagesWithCropsSelected_pageNumber[i]],
                 fontSize: x.lines[0].words[0].font_size,
                 order: index
             })));

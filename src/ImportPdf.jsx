@@ -117,6 +117,13 @@ const useStore = create((set) => ({
     setPxCrop: (value) => set({
         pxCrop: value
     }),
+
+    loadingState:null,
+
+    setLoadingState: (value) => set({
+
+loadingState:value
+    })
 }));
 
 
@@ -448,7 +455,10 @@ function ImportPdf() {
 const onButtonExtractText = async () => {
 
 useStore.getState().setIsLoading(true); 
-const textBlocks = await extractText(useStore.getState().crops,images,startRange,endRange)
+const textBlocks = await extractText(useStore.getState().crops,images,startRange,endRange, (page, crop, totalPagesWithCrops, pageOfTotalPages, totalCropsOfPage)=>{
+
+    useStore.getState().setLoadingState([page,crop,totalPagesWithCrops,pageOfTotalPages,totalCropsOfPage]); 
+})
 
 //const res = await generateAbstractsForTextBlocks(textBlocks)
 
@@ -470,9 +480,27 @@ resetState();
 
 
         <div className="content-container">
-            {useStore.getState().isLoading && (
+            {useStore.getState().isLoading && useStore.getState().loadingState && (
                 <div className="loading-overlay">
-                    <div className="loading-indicator">Verarbeitung...</div>
+                    <div className="loading-indicator">
+                        
+                        <div>
+                        <div>Verarbeitung...</div>
+
+<div>
+    
+    <span>Seite: 
+        
+        </span>{useStore.getState().loadingState?useStore.getState().loadingState[3]+" von "+useStore.getState().loadingState[2]:null}
+            <div>Seitenzahl im Dokument: {useStore.getState().loadingState[0]}</div>
+    
+    </div>
+<div><span>Crop:</span>{useStore.getState().loadingState?useStore.getState().loadingState[1]+" von "+useStore.getState().loadingState[4]:null}</div>
+
+                        
+                        </div>
+                        
+                        </div>
                 </div>
             )}
 
@@ -620,7 +648,13 @@ resetState();
 
 
 
-            <div>{seq.map((x)=>{return <div>{x.text}</div>})}</div>
+            <div>{seq.map((x)=>{
+                
+                
+                return <p style={{padding:"10px"}}><b>{"Seite: "+(x.page[0]+1)}</b><br></br>{x.text}</p>
+                
+                
+                })}</div>
 
        
 
