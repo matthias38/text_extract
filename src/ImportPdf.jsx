@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 
 import * as pdfjs from 'pdfjs-dist/build/pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+//pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
-
+pdfjs.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/"+pdfjs.version+"/pdf.worker.min.mjs";
 
 
 import ReactModal from 'react-modal';
